@@ -3,3 +3,6 @@
 export type { ParseResult, Validator, Preprocess } from "./types";
 export { stripCodeFences } from "./preprocess";
 export { tryParse, type TryParseOptions } from "./parse";
+export { beguile } from "./beguile";
+export type { BeguileOptions, Producer, RetryContext, AttemptInfo } from "./beguile";
+export { RetryExhaustedError } from "./errors";
