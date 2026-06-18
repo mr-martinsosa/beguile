@@ -1,8 +1,10 @@
 name: Release
 
-# Publishes to npm when a v* tag is pushed. Requires an NPM_TOKEN secret
-# (an npm automation token). Publishes with provenance, which records a
-# verifiable link from the package back to this repo and workflow.
+# Publishes to npm via trusted publishing (OIDC) when a v* tag is pushed.
+# No token or secret is required: npm authenticates through GitHub's OIDC, and
+# provenance is generated automatically for this public repo. Requires a trusted
+# publisher to be configured on npmjs.com for this repository and this workflow
+# filename (release.yml). Trusted publishing needs npm >= 11.5.1.
 on:
   push:
     tags: ["v*"]
@@ -17,10 +19,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
           cache: npm
+      - run: npm install -g npm@latest
       - run: npm ci
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish
