@@ -14,6 +14,15 @@ describe("stripCodeFences", () => {
     expect(stripCodeFences('```\n{"a":1}\n```')).toBe('{"a":1}');
   });
 
+  it("strips any fence info string, not just json", () => {
+    expect(stripCodeFences('```json5\n{"a":1}\n```')).toBe('{"a":1}');
+    expect(stripCodeFences('```javascript\n{"a":1}\n```')).toBe('{"a":1}');
+  });
+
+  it("handles CRLF line endings", () => {
+    expect(stripCodeFences('```json\r\n{"a":1}\r\n```')).toBe('{"a":1}');
+  });
+
   it("leaves backticks inside the payload alone", () => {
     expect(stripCodeFences('{"a":"`x`"}')).toBe('{"a":"`x`"}');
   });

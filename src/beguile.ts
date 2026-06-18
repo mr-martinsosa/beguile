@@ -40,7 +40,11 @@ export interface BeguileOptions<T> {
   retries?: number;
   /** Cleans each raw string before JSON.parse. Defaults to `stripCodeFences`. */
   preprocess?: Preprocess;
-  /** Called after every attempt with its outcome. An error thrown here propagates. */
+  /**
+   * Called synchronously after every attempt, for logging or metrics. A thrown
+   * error propagates and aborts the loop. Keep it synchronous: a returned
+   * promise is not awaited.
+   */
   onAttempt?: (info: AttemptInfo<T>) => void;
 }
 
@@ -50,10 +54,8 @@ export interface BeguileOptions<T> {
  * output fed back so the producer can self-correct. Resolves with the validated
  * value, or rejects with `RetryExhaustedError` once all attempts are spent.
  *
- * Scope: this retries PARSE and VALIDATION failures. If `produce` itself throws
- * (for example a transport error), that rejection propagates unchanged; wrap
- * your own transport retries inside `produce` if you need them. Backoff and
- * jitter are out of scope by design.
+ * Retries parse and validation failures only. A throw from `produce` itself
+ * propagates unchanged (handle transport retries inside `produce`).
  */
 export async function beguile<T>(options: BeguileOptions<T>): Promise<T> {
   const { produce, validate, preprocess, onAttempt } = options;

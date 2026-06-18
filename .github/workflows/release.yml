@@ -1,0 +1,26 @@
+name: Release
+
+# Publishes to npm when a v* tag is pushed. Requires an NPM_TOKEN secret
+# (an npm automation token). Publishes with provenance, which records a
+# verifiable link from the package back to this repo and workflow.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+      - run: npm ci
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

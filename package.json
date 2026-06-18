@@ -1,8 +1,16 @@
 {
   "name": "beguile",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Parse, validate, and retry: coax schema-valid data out of an unreliable producer.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr-martinsosa/beguile.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mr-martinsosa/beguile/issues"
+  },
+  "homepage": "https://github.com/mr-martinsosa/beguile#readme",
   "exports": {
     ".": {
       "import": {
@@ -29,6 +37,11 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "zod": ["./dist/zod.d.ts"]
+    }
+  },
   "files": [
     "dist",
     "src"
@@ -38,7 +51,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.build.json && node scripts/postbuild.mjs",
+    "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -56,6 +69,9 @@
   ],
   "author": "Martin Sosa <mr.martinsosa@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "zod": ">=4"
   },

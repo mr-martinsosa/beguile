@@ -1,16 +1,18 @@
 import { defineConfig } from "tsup";
 
-// Dual-publish the JavaScript: ESM (dist/index.js) + CJS (dist/index.cjs).
+// Bundle both JS and type declarations to a single self-contained file per
+// entry (ESM, CJS, .d.ts, .d.cts). Bundled declarations are what keep the types
+// resolvable under node16/nodenext: an unbundled `tsc` emit ships extensionless
+// relative imports (e.g. `from "./types"`) that fail node16 resolution and that
+// @arethetypeswrong/cli flags. A bundled .d.ts has no internal imports at all.
 //
-// Declarations are intentionally NOT built here (`dts: false`). tsup's dts
-// bundler hardcodes the `baseUrl` compiler option, which TypeScript 6 has
-// deprecated and TypeScript 7 will remove. Rather than silence that with
-// `ignoreDeprecations`, the build script emits declarations with plain `tsc`
-// (see package.json), which never sets baseUrl. Standard TS, no deprecated path.
+// tsup's declaration bundler still sets the `baseUrl` compiler option, which
+// TypeScript 6 deprecates; `ignoreDeprecations` in tsconfig.json silences that.
+// It is a build-time-only concession to the bundler and never reaches consumers.
 export default defineConfig({
   entry: ["src/index.ts", "src/zod.ts"],
   format: ["esm", "cjs"],
-  dts: false,
+  dts: true,
   clean: true,
   sourcemap: true,
   treeshake: true,

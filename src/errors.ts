@@ -22,7 +22,5 @@ export class RetryExhaustedError extends Error {
     this.attempts = errors.length;
     this.errors = errors;
     this.lastOutput = lastOutput;
-    // Keep instanceof working when this is transpiled below ES2015.
-    Object.setPrototypeOf(this, RetryExhaustedError.prototype);
   }
 }

@@ -88,6 +88,18 @@ describe("beguile", () => {
     expect(produce).toHaveBeenCalledTimes(1);
   });
 
+  it("treats a throwing validator as a failed attempt and retries", async () => {
+    let calls = 0;
+    const validate: Validator<User> = (input) => {
+      calls++;
+      if (calls === 1) throw new Error("boom on first call");
+      return userValidator(input);
+    };
+    const value = await beguile({ produce: () => '{"name":"Ada"}', validate });
+    expect(value).toEqual({ name: "Ada" });
+    expect(calls).toBe(2);
+  });
+
   it("reports every attempt to onAttempt", async () => {
     const seen: string[] = [];
     await beguile({

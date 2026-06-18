@@ -13,8 +13,11 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "dist",
-    "rootDir": "."
+    "noEmit": true,
+    // Required by tsup's declaration bundler, which still sets the now-deprecated
+    // `baseUrl` option (TS6 deprecation, TS7 removal). Build-time only; it lets us
+    // ship bundled, node16-resolvable declarations. See tsup.config.ts.
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src", "test"]
 }

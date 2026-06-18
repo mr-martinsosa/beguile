@@ -42,6 +42,15 @@ describe("tryParse", () => {
     if (!r.ok) expect(r.error.message).toMatch(/name/);
   });
 
+  it("catches a throwing validator instead of propagating (never throws)", () => {
+    const throwing: Validator<User> = () => {
+      throw new Error("validator boom");
+    };
+    const r = tryParse('{"name":"Ada"}', { validate: throwing });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error.message).toMatch(/boom/);
+  });
+
   it("honors a custom preprocess", () => {
     const r = tryParse('DATA:{"name":"Ada"}', {
       validate: userValidator,
