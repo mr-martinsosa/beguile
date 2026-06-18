@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { ping } from "../src/index";
+import * as beguile from "../src/index";
 
-describe("scaffold", () => {
-  it("builds, exports, and runs under vitest", () => {
-    expect(ping()).toBe("pong");
+describe("public surface", () => {
+  it("exports the public surface", () => {
+    expect(typeof beguile.tryParse).toBe("function");
+    expect(typeof beguile.stripCodeFences).toBe("function");
   });
 });

@@ -8,7 +8,7 @@ import { defineConfig } from "tsup";
 // `ignoreDeprecations`, the build script emits declarations with plain `tsc`
 // (see package.json), which never sets baseUrl. Standard TS, no deprecated path.
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: ["src/index.ts", "src/zod.ts"],
   format: ["esm", "cjs"],
   dts: false,
   clean: true,
