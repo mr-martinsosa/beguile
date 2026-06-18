@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/beguile.svg)](https://www.npmjs.com/package/beguile)
 [![CI](https://github.com/mr-martinsosa/beguile/actions/workflows/ci.yml/badge.svg)](https://github.com/mr-martinsosa/beguile/actions/workflows/ci.yml)
-[![license](https://img.shields.io/npm/l/beguile.svg)](./LICENSE)
+[![license](https://img.shields.io/github/license/mr-martinsosa/beguile.svg)](./LICENSE)
 
 Parse, validate, and retry. `beguile` calls a producer, parses its output as JSON, validates it
 against a schema, and on failure retries with the previous error fed back so the producer can
